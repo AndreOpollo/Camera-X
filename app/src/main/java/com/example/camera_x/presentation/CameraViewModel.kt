@@ -6,8 +6,10 @@ import androidx.camera.core.Camera
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.Preview
+import androidx.camera.view.PreviewView
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.camera_x.presentation.utils.takePhoto
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,9 +23,7 @@ class CameraViewModel @Inject constructor(): ViewModel() {
     private val _uiState = MutableStateFlow(CameraUiState())
     val uiState = _uiState.asStateFlow()
 
-    private var camera: Camera? = null
-    private var imageCapture: ImageCapture? = null
-    private var previewUseCase: Preview? = null
+
 
     fun onEvent(e: CameraUiEvent){
         when(e){
@@ -52,6 +52,11 @@ class CameraViewModel @Inject constructor(): ViewModel() {
                 maxExposure = e.maxExposure,
                 currentExposure = e.currentExposure
             )
+
+            is CameraUiEvent.SetCamera -> setCamera(e.camera)
+            is CameraUiEvent.SetImageCapture -> setImageCapture(e.imageCapture)
+            is CameraUiEvent.SetPreviewView -> setPreviewView(e.previewView)
+            CameraUiEvent.ResetCaptureFlag -> resetCaptureFlag()
         }
     }
     private fun initializeCamera(){
@@ -70,10 +75,16 @@ class CameraViewModel @Inject constructor(): ViewModel() {
                 )
             }
             startCountdownTimer()
+
         } else {
-            _uiState.update {
-                it.copy(countdownActive = false, countdownValue = 0)
+            currentState.imageCapture?.let {
+                capture->
+                _uiState.update {
+                    it.copy(countdownActive = false, countdownValue = 0, shouldCapturePhoto = true)
+                }
+
             }
+
         }
     }
     private fun startCountdownTimer(){
@@ -86,7 +97,7 @@ class CameraViewModel @Inject constructor(): ViewModel() {
             }
             if(_uiState.value.countdownActive && _uiState.value.countdownValue == 0){
                 _uiState.update {
-                    it.copy(countdownActive = false)
+                    it.copy(countdownActive = false, shouldCapturePhoto = true)
                 }
             }
         }
@@ -200,7 +211,13 @@ class CameraViewModel @Inject constructor(): ViewModel() {
                 zoomRatio = constrainedZoom
             )
         }
-        camera?.cameraControl?.setZoomRatio(constrainedZoom)
+
+        _uiState.value.camera?.cameraControl?.setZoomRatio(constrainedZoom)
+    }
+    private fun resetCaptureFlag(){
+        _uiState.update {
+            it.copy(shouldCapturePhoto = false)
+        }
     }
     private fun changeExposure(exposure:Int){
         val constrainedExposure = exposure.coerceIn(
@@ -210,14 +227,23 @@ class CameraViewModel @Inject constructor(): ViewModel() {
         _uiState.update {
             it.copy(exposureIndex = constrainedExposure)
         }
-        camera?.cameraControl?.setExposureCompensationIndex(constrainedExposure)
+        _uiState.value.camera?.cameraControl?.setExposureCompensationIndex(constrainedExposure)
 
     }
     fun setCamera(camera: Camera){
-        this.camera = camera
+        _uiState.update {
+            it.copy(camera = camera)
+        }
     }
     fun setImageCapture(imageCapture: ImageCapture){
-        this.imageCapture = imageCapture
+        _uiState.update {
+            it.copy(imageCapture = imageCapture)
+        }
+    }
+    fun setPreviewView(previewView: PreviewView){
+        _uiState.update {
+            it.copy(previewView = previewView)
+        }
     }
     fun onImageCaptured(uri: Uri){
         _uiState.update {

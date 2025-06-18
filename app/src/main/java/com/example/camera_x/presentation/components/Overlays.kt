@@ -65,7 +65,7 @@ fun ZoomIndicator(
         )
     ){
         Text(
-            text = "${String.format("%.f",zoomRatio)}x",
+            text = "${String.format("%.1f", zoomRatio)}x",
             color = Color.White,
             modifier = Modifier.padding(8.dp)
         )

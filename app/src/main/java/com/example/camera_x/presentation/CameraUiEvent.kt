@@ -1,5 +1,9 @@
 package com.example.camera_x.presentation
 
+import androidx.camera.core.Camera
+import androidx.camera.core.ImageCapture
+import androidx.camera.view.PreviewView
+
 sealed class CameraUiEvent{
     data object InitializeCamera: CameraUiEvent()
     data object CapturePhoto: CameraUiEvent()
@@ -26,4 +30,8 @@ sealed class CameraUiEvent{
         val maxExposure: Int,
         val currentExposure: Int
     ): CameraUiEvent()
+    data class SetCamera(val camera: Camera): CameraUiEvent()
+    data class SetImageCapture(val imageCapture: ImageCapture): CameraUiEvent()
+    data class SetPreviewView(val previewView: PreviewView): CameraUiEvent()
+    data object ResetCaptureFlag: CameraUiEvent()
 }

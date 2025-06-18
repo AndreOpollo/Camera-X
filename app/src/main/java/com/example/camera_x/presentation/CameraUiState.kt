@@ -1,8 +1,10 @@
 package com.example.camera_x.presentation
 
 import android.net.Uri
+import androidx.camera.core.Camera
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture
+import androidx.camera.view.PreviewView
 
 data class CameraUiState(
     val isInitialized: Boolean = false,
@@ -23,5 +25,9 @@ data class CameraUiState(
     val countdownActive:Boolean = false,
     val countdownValue:Int = 0,
     val error: String? = null,
-    val isLoading: Boolean = false
+    val isLoading: Boolean = false,
+    val camera: Camera? = null,
+    val imageCapture: ImageCapture? = null,
+    val previewView: PreviewView? = null,
+    val shouldCapturePhoto:Boolean = false
 )
