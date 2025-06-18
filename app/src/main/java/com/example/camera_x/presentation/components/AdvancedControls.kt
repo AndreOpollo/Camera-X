@@ -1,5 +1,6 @@
 package com.example.camera_x.presentation.components
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -29,12 +30,14 @@ fun AdvancedControls(
             containerColor = Color.Black.copy(alpha = 0.7f)
         )
     ){
+
         Column(modifier = Modifier.padding(16.dp)){
             if(uiState.maxZoom>uiState.minZoom){
                 Text(text="Zoom", color = Color.White)
                 Slider(
                     value = uiState.zoomRatio,
-                    onValueChange = {onEvent(CameraUiEvent.ChangeZoom(it))},
+                    onValueChange = {
+                        onEvent(CameraUiEvent.ChangeZoom(it))},
                     valueRange = uiState.minZoom..uiState.maxZoom,
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -44,7 +47,8 @@ fun AdvancedControls(
                 Text(text = "Exposure", color = Color.White)
                 Slider(
                     value = uiState.exposureIndex.toFloat(),
-                    onValueChange = {onEvent(CameraUiEvent.ChangeExposure(it.toInt()))},
+                    onValueChange = {
+                        onEvent(CameraUiEvent.ChangeExposure(it.toInt()))},
                     valueRange = uiState.minExposure.toFloat()..uiState.maxExposure.toFloat(),
                     modifier = Modifier.fillMaxWidth()
                 )

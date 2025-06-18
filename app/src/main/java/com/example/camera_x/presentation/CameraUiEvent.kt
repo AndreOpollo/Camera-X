@@ -20,6 +20,7 @@ sealed class CameraUiEvent{
     data object ClearError: CameraUiEvent()
     data class ChangeCaptureMode(val mode: Int): CameraUiEvent()
     data class ChangeZoom(val zoom: Float): CameraUiEvent()
+    data class ChangeZoomByGestures(val zoom: Float): CameraUiEvent()
     data class ChangeExposure(val exposure: Int): CameraUiEvent()
     data class FocusAt(val x: Float, val y: Float): CameraUiEvent()
     data class UpdateCameraInfo(

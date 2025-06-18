@@ -6,6 +6,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
+import android.util.Log
 import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.ScaleGestureDetector
@@ -63,6 +64,8 @@ fun setupGestureHandling(
 
     previewView.setOnTouchListener {
         v,event->
+        Log.d("GestureDebug", "Touch event: ${event.action}")
+
         var handled = false
         if(scaleGestureDetector.onTouchEvent(event)){
             handled = true

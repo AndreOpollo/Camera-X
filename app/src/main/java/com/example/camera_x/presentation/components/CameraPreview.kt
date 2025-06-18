@@ -10,13 +10,16 @@ import androidx.camera.core.ImageCapture
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
+import androidx.compose.animation.core.Animatable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -36,33 +39,30 @@ fun CameraPreview(
     uiState: CameraUiState,
     onEvent: (CameraUiEvent)-> Unit,
     onImageCaptured:(Uri)->Unit,
-    onError:(Throwable)->Unit,
-    viewModel: CameraViewModel = hiltViewModel<CameraViewModel>()
+    onError:(Throwable)->Unit
 ){
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
 
-//    var previewView by remember { mutableStateOf<PreviewView?>(null) }
-//    var camera by remember { mutableStateOf<Camera?>(null)}
-//    var imageCapture by remember { mutableStateOf<ImageCapture?>(null) }
 
-    val scaleGestureDetector = remember {
-        ScaleGestureDetector(context,
-            object: ScaleGestureDetector.SimpleOnScaleGestureListener(){
+    val scaleGestureDetector =
+        ScaleGestureDetector(
+            context,
+            object : ScaleGestureDetector.SimpleOnScaleGestureListener() {
                 override fun onScale(detector: ScaleGestureDetector): Boolean {
                     val scale = detector.scaleFactor
-                    val newZoomRatio = (uiState.zoomRatio*scale)
-                        .coerceIn(uiState.minZoom,uiState.maxZoom)
+                    val newZoomRatio = (uiState.zoomRatio * scale)
+                        .coerceIn(uiState.minZoom, uiState.maxZoom)
                     onEvent(CameraUiEvent.ChangeZoom(newZoomRatio))
                     return true
                 }
             })
-    }
 
     LaunchedEffect(uiState.lensFacing,
         uiState.flashMode,
         uiState.captureMode,
-        uiState.previewView) {
+        uiState.previewView,
+        ) {
 
         try {
             val cameraProvider = ProcessCameraProvider.getInstance(context).get()
@@ -86,8 +86,6 @@ fun CameraPreview(
             onEvent(CameraUiEvent.SetCamera(camera))
             onEvent(CameraUiEvent.SetImageCapture(imageCapture))
 
-
-
                 val zoomState = camera.cameraInfo.zoomState.value
                 val exposureState = camera.cameraInfo.exposureState
                 onEvent(CameraUiEvent.UpdateCameraInfo(
@@ -98,8 +96,6 @@ fun CameraPreview(
                     maxExposure = exposureState.exposureCompensationRange.upper,
                     currentExposure = exposureState.exposureCompensationIndex
                 ))
-
-
 
         }catch (e: Exception){
             onError(e)
@@ -128,10 +124,10 @@ fun CameraPreview(
                     onError = onError
                 )
             }
-            // Reset the capture flag
             onEvent(CameraUiEvent.ResetCaptureFlag)
         }
     }
+
 
     Box(modifier = Modifier.fillMaxSize()){
         AndroidView(
@@ -158,8 +154,6 @@ fun CameraPreview(
             onEvent = onEvent,
             modifier = Modifier.fillMaxSize()
         )
-
     }
-
 }
 

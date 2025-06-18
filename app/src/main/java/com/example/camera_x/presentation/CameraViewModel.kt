@@ -57,6 +57,7 @@ class CameraViewModel @Inject constructor(): ViewModel() {
             is CameraUiEvent.SetImageCapture -> setImageCapture(e.imageCapture)
             is CameraUiEvent.SetPreviewView -> setPreviewView(e.previewView)
             CameraUiEvent.ResetCaptureFlag -> resetCaptureFlag()
+            is CameraUiEvent.ChangeZoomByGestures -> changeZoomByGestures(e.zoom)
         }
     }
     private fun initializeCamera(){
@@ -206,13 +207,19 @@ class CameraViewModel @Inject constructor(): ViewModel() {
     private fun changeZoom(zoom:Float){
         val constrainedZoom = zoom.coerceIn(_uiState.value.minZoom,
             _uiState.value.maxZoom)
-        _uiState.update {
-            it.copy(
-                zoomRatio = constrainedZoom
-            )
+        if (constrainedZoom != _uiState.value.zoomRatio) {
+            _uiState.update {
+                it.copy(zoomRatio = constrainedZoom)
+            }
+
         }
 
         _uiState.value.camera?.cameraControl?.setZoomRatio(constrainedZoom)
+    }
+    private fun changeZoomByGestures(zoom: Float){
+        _uiState.update {
+            it.copy(zoomRatio = zoom)
+        }
     }
     private fun resetCaptureFlag(){
         _uiState.update {
