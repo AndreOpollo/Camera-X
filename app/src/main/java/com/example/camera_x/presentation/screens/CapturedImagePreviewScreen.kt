@@ -32,7 +32,7 @@ fun CapturedImagePreviewScreen(
     Box(modifier = modifier.fillMaxSize()){
         CapturedImagePreview(
             uri = uri,
-            onShare = {
+            onShare = {uri->
                 shareImage(
                     context = context,
                     uri = uri

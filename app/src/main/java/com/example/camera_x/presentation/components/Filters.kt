@@ -1,6 +1,7 @@
 package com.example.camera_x.presentation.components
 
 
+import android.content.Context
 import android.graphics.BitmapFactory
 import android.net.Uri
 import androidx.compose.foundation.Image
@@ -24,15 +25,33 @@ import android.graphics.ColorMatrix
 import android.graphics.ColorMatrixColorFilter
 
 import android.graphics.Paint
+import android.util.Log
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.core.graphics.createBitmap
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 data class ImageFilter(val name:String,val matrix: ColorMatrix)
 
@@ -56,7 +75,7 @@ fun getAvailableFilters(): List<ImageFilter> = listOf(
             0f,  0f,  0f,  1f,   0f
         )
     )),
-    ImageFilter("Bright +", ColorMatrix(
+    ImageFilter("Bright", ColorMatrix(
         floatArrayOf(
             1f, 0f, 0f, 0f, 50f,
             0f, 1f, 0f, 0f, 50f,
@@ -64,16 +83,82 @@ fun getAvailableFilters(): List<ImageFilter> = listOf(
             0f, 0f, 0f, 1f, 0f
         )
     )),
-    ImageFilter("Contrast +", ColorMatrix(
+    ImageFilter("Contrast", ColorMatrix(
         floatArrayOf(
             1.5f, 0f, 0f, 0f, 128 * (1 - 1.5f),
             0f, 1.5f, 0f, 0f, 128 * (1 - 1.5f),
             0f, 0f, 1.5f, 0f, 128 * (1 - 1.5f),
             0f, 0f, 0f, 1f, 0f
         )
-    ))
+    )),
 
+    ImageFilter("Warm", ColorMatrix(
+        floatArrayOf(
+            1.1f, 0f, 0f, 0f, 0f,
+            0f, 1.05f, 0f, 0f, 0f,
+            0f, 0f, 0.9f, 0f, 0f,
+            0f, 0f, 0f, 1f, 0f
+        )
+    )),
+    ImageFilter("Cool", ColorMatrix(
+        floatArrayOf(
+            0.9f, 0f, 0f, 0f, 0f,
+            0f, 0.95f, 0f, 0f, 0f,
+            0f, 0f, 1.1f, 0f, 0f,
+            0f, 0f, 0f, 1f, 0f
+        )
+    )),
+    ImageFilter("Vintage", ColorMatrix(
+        floatArrayOf(
+            0.6f, 0.3f, 0.1f, 0f, 0f,
+            0.2f, 0.7f, 0.1f, 0f, 0f,
+            0.1f, 0.2f, 0.7f, 0f, 0f,
+            0f, 0f, 0f, 1f, 0f
+        )
+    )),
+    ImageFilter("Polaroid", ColorMatrix(
+        floatArrayOf(
+            1.483f, -0.122f, -0.016f, 0f, -5.31f,
+            -0.843f, 1.613f, -0.135f, 0f, 2.78f,
+            -0.012f, 0.073f, 1.843f, 0f, -12.08f,
+            0f, 0f, 0f, 1f, 0f
+        )
+    )),
 )
+
+@Composable
+fun FilterItem(
+    filter: ImageFilter,
+    isSelected: Boolean,
+    onClick:()->Unit
+){
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.clickable{onClick()}
+    ){
+        Box(
+            modifier = Modifier
+                .size(50.dp)
+                .clip(CircleShape)
+                .background(Color.Red)
+                .border(
+                    width = if (isSelected) 3.dp else 1.dp,
+                    color = if (isSelected) MaterialTheme.colorScheme.primary else Color.White,
+                    shape = CircleShape
+                )
+        )
+        Spacer(modifier = Modifier.height(4.dp))
+        Text(
+            text = filter.name,
+            fontSize = 10.sp,
+            color = if (isSelected) MaterialTheme.colorScheme.primary else Color.White,
+            fontWeight = if(isSelected) FontWeight.Bold else FontWeight.Normal,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.width(60.dp)
+        )
+    }
+
+}
 @Composable
 fun CapturedImagePreview2(
     uri: Uri,
@@ -99,7 +184,7 @@ fun CapturedImagePreview2(
                     bitmap = bitmap.asImageBitmap(),
                     contentDescription = null,
                     contentScale = ContentScale.Fit,
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier.fillMaxSize(),
                 )
             }
         }
@@ -120,7 +205,6 @@ fun CapturedImagePreview2(
             }
         }
 
-        // Optional: Share/Delete actions
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -131,6 +215,7 @@ fun CapturedImagePreview2(
                 filteredBitmap?.let {
                     val filteredUri = saveBitmapToCache(context, it)
                     onShare(filteredUri)
+                    Log.d("Filtered Uri",filteredUri.toString())
                 }
             }) { Text("Share") }
             Button(onClick = onDelete) { Text("Delete") }
