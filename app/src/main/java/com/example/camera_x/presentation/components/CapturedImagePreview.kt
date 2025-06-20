@@ -45,6 +45,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import coil3.compose.rememberAsyncImagePainter
+import com.example.camera_x.presentation.utils.saveBitmapToCache
 import com.example.camera_x.presentation.utils.saveImage
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch

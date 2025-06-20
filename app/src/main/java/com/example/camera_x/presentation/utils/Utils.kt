@@ -18,7 +18,10 @@ import androidx.camera.core.ImageCapture
 import androidx.camera.core.ImageCaptureException
 import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import com.example.camera_x.presentation.CameraUiEvent
+import java.io.File
+import java.io.FileOutputStream
 import java.io.OutputStream
 
 
@@ -136,6 +139,8 @@ fun shareImage(context: Context,uri: Uri){
 }
 fun deleteImage(context: Context,uri:Uri){
     context.contentResolver.delete(uri,null,null)
+    Toast.makeText(context, "Image deleted from gallery", Toast.LENGTH_SHORT).show()
+
 }
 fun saveImage(context: Context, bitmap: Bitmap){
     val filename = "IMG_${System.currentTimeMillis()}.jpg"
@@ -165,6 +170,7 @@ fun saveImage(context: Context, bitmap: Bitmap){
                 contentResolver.update(uri, contentValues, null, null)
             }
             Toast.makeText(context, "Image saved to gallery", Toast.LENGTH_SHORT).show()
+
         } catch (e: Exception) {
             e.printStackTrace()
             Toast.makeText(context, "Failed to save image", Toast.LENGTH_SHORT).show()
@@ -172,4 +178,20 @@ fun saveImage(context: Context, bitmap: Bitmap){
     } else {
         Toast.makeText(context, "Unable to create image uri", Toast.LENGTH_SHORT).show()
     }
+}
+fun saveBitmapToCache(context: Context, bitmap: Bitmap): Uri {
+    val cachePath = File(context.cacheDir, "filtered_images")
+    cachePath.mkdirs()
+
+    val file = File(cachePath, "filtered_${System.currentTimeMillis()}.jpg")
+    val outputStream = FileOutputStream(file)
+    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+    outputStream.flush()
+    outputStream.close()
+
+    return FileProvider.getUriForFile(
+        context,
+        "${context.packageName}.provider",
+        file
+    )
 }

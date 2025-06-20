@@ -53,11 +53,14 @@ import androidx.core.graphics.createBitmap
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-data class ImageFilter(val name:String,val matrix: ColorMatrix)
+data class ImageFilter(
+    val name:String,
+    val matrix: ColorMatrix,
+    val previewColor: Color)
 
 fun getAvailableFilters(): List<ImageFilter> = listOf(
-    ImageFilter("Original", ColorMatrix().apply { setSaturation(1f) }),
-    ImageFilter("GrayScale", ColorMatrix().apply { setSaturation(0f) }),
+    ImageFilter("Original", ColorMatrix().apply { setSaturation(1f) }, Color.White),
+    ImageFilter("GrayScale", ColorMatrix().apply { setSaturation(0f) }, Color.LightGray),
     ImageFilter("Sepia", ColorMatrix(
         floatArrayOf(
             0.393f, 0.769f, 0.189f, 0f, 0f,
@@ -65,8 +68,8 @@ fun getAvailableFilters(): List<ImageFilter> = listOf(
             0.272f, 0.534f, 0.131f, 0f, 0f,
             0f,     0f,     0f,     1f, 0f
         )
-    )
-    ),
+    ), Color(0xFF704214)),
+
     ImageFilter("Invert", ColorMatrix(
         floatArrayOf(
             -1f,  0f,  0f,  0f, 255f,
@@ -74,7 +77,8 @@ fun getAvailableFilters(): List<ImageFilter> = listOf(
             0f,  0f, -1f,  0f, 255f,
             0f,  0f,  0f,  1f,   0f
         )
-    )),
+    ), Color.Black),
+
     ImageFilter("Bright", ColorMatrix(
         floatArrayOf(
             1f, 0f, 0f, 0f, 50f,
@@ -82,7 +86,8 @@ fun getAvailableFilters(): List<ImageFilter> = listOf(
             0f, 0f, 1f, 0f, 50f,
             0f, 0f, 0f, 1f, 0f
         )
-    )),
+    ), Color.Yellow),
+
     ImageFilter("Contrast", ColorMatrix(
         floatArrayOf(
             1.5f, 0f, 0f, 0f, 128 * (1 - 1.5f),
@@ -90,7 +95,7 @@ fun getAvailableFilters(): List<ImageFilter> = listOf(
             0f, 0f, 1.5f, 0f, 128 * (1 - 1.5f),
             0f, 0f, 0f, 1f, 0f
         )
-    )),
+    ), Color.DarkGray),
 
     ImageFilter("Warm", ColorMatrix(
         floatArrayOf(
@@ -99,7 +104,8 @@ fun getAvailableFilters(): List<ImageFilter> = listOf(
             0f, 0f, 0.9f, 0f, 0f,
             0f, 0f, 0f, 1f, 0f
         )
-    )),
+    ), Color(0xFFFF7043)),
+
     ImageFilter("Cool", ColorMatrix(
         floatArrayOf(
             0.9f, 0f, 0f, 0f, 0f,
@@ -107,7 +113,8 @@ fun getAvailableFilters(): List<ImageFilter> = listOf(
             0f, 0f, 1.1f, 0f, 0f,
             0f, 0f, 0f, 1f, 0f
         )
-    )),
+    ), Color(0xFF40C4FF)),
+
     ImageFilter("Vintage", ColorMatrix(
         floatArrayOf(
             0.6f, 0.3f, 0.1f, 0f, 0f,
@@ -115,7 +122,8 @@ fun getAvailableFilters(): List<ImageFilter> = listOf(
             0.1f, 0.2f, 0.7f, 0f, 0f,
             0f, 0f, 0f, 1f, 0f
         )
-    )),
+    ), Color(0xFFBDB76B)),
+
     ImageFilter("Polaroid", ColorMatrix(
         floatArrayOf(
             1.483f, -0.122f, -0.016f, 0f, -5.31f,
@@ -123,7 +131,7 @@ fun getAvailableFilters(): List<ImageFilter> = listOf(
             -0.012f, 0.073f, 1.843f, 0f, -12.08f,
             0f, 0f, 0f, 1f, 0f
         )
-    )),
+    ), Color(0xFF8A2BE2))
 )
 
 @Composable
@@ -140,7 +148,7 @@ fun FilterItem(
             modifier = Modifier
                 .size(50.dp)
                 .clip(CircleShape)
-                .background(Color.Red)
+                .background(filter.previewColor)
                 .border(
                     width = if (isSelected) 3.dp else 1.dp,
                     color = if (isSelected) MaterialTheme.colorScheme.primary else Color.White,
@@ -159,69 +167,7 @@ fun FilterItem(
     }
 
 }
-@Composable
-fun CapturedImagePreview2(
-    uri: Uri,
-    onShare: (Uri) -> Unit,
-    onDelete: () -> Unit,
-) {
-    val context = LocalContext.current
-    val filters = remember { getAvailableFilters() }
-    var selectedFilter by remember { mutableStateOf(filters.first()) }
-    var filteredBitmap by remember { mutableStateOf<Bitmap?>(null) }
 
-    LaunchedEffect(uri, selectedFilter) {
-        val inputStream = context.contentResolver.openInputStream(uri)
-        val originalBitmap = BitmapFactory.decodeStream(inputStream)
-        inputStream?.close()
-        filteredBitmap = applyColorMatrixFilter(originalBitmap, selectedFilter.matrix)
-    }
-
-    Column(modifier = Modifier.fillMaxSize()) {
-        Box(modifier = Modifier.weight(1f)) {
-            filteredBitmap?.let { bitmap ->
-                Image(
-                    bitmap = bitmap.asImageBitmap(),
-                    contentDescription = null,
-                    contentScale = ContentScale.Fit,
-                    modifier = Modifier.fillMaxSize(),
-                )
-            }
-        }
-
-        // Filter selection row
-        LazyRow(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp)
-        ) {
-            items(filters) { filter ->
-                Button(
-                    onClick = { selectedFilter = filter },
-                    modifier = Modifier.padding(end = 8.dp)
-                ) {
-                    Text(text = filter.name)
-                }
-            }
-        }
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp),
-            horizontalArrangement = Arrangement.SpaceEvenly
-        ) {
-            Button(onClick = {
-                filteredBitmap?.let {
-                    val filteredUri = saveBitmapToCache(context, it)
-                    onShare(filteredUri)
-                    Log.d("Filtered Uri",filteredUri.toString())
-                }
-            }) { Text("Share") }
-            Button(onClick = onDelete) { Text("Delete") }
-        }
-    }
-}
 fun applyColorMatrixFilter(original: Bitmap, matrix: ColorMatrix): Bitmap {
     val filtered = createBitmap(original.width, original.height, original.config!!)
     val canvas = Canvas(filtered)
