@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.Button
@@ -28,6 +29,7 @@ fun CapturedImagePreview(
     uri: Uri,
     onShare:()->Unit,
     onDelete:()->Unit,
+    onBackClicked:()->Unit,
     modifier: Modifier = Modifier
 ){
     Box(modifier = modifier.fillMaxSize()){
@@ -53,6 +55,11 @@ fun CapturedImagePreview(
                 Icon(Icons.Default.Delete, contentDescription = null)
                 Spacer(modifier = Modifier.width(8.dp))
                 Text("Delete")
+            }
+            Button(onClick = onBackClicked) {
+                Icon(Icons.Default.ArrowBack, contentDescription = null)
+                Spacer(modifier = Modifier.width(8.dp))
+                Text("Back")
             }
 
         }

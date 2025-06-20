@@ -1,10 +1,9 @@
-package com.example.camera_x.presentation.components
+package com.example.camera_x.presentation.screens
 
 import android.Manifest
 import android.content.pm.PackageManager
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,17 +14,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.camera_x.presentation.CameraUiEvent
 import com.example.camera_x.presentation.CameraViewModel
-import com.example.camera_x.presentation.utils.deleteImage
-import com.example.camera_x.presentation.utils.shareImage
+import com.example.camera_x.presentation.components.CameraPreview
+import com.example.camera_x.presentation.components.ErrorDialog
 
 @Composable
 fun CameraScreen(
     modifier: Modifier = Modifier,
     viewModel: CameraViewModel = hiltViewModel<CameraViewModel>(),
     onImageCaptured:(Uri)->Unit = {},
-    onError:(Throwable)->Unit = {}
+    onError:(Throwable)->Unit = {},
+    navController: NavHostController
 ){
     val uiState = viewModel.uiState.collectAsState()
     val context = LocalContext.current
@@ -47,43 +50,43 @@ fun CameraScreen(
         }
     }
     Box(modifier = modifier.fillMaxSize()){
-        if(uiState.value.capturedUri == null){
-            CameraPreview(
-                uiState = uiState.value,
-                onEvent = viewModel::onEvent,
-                onImageCaptured = {uri->
-                    viewModel.onImageCaptured(uri)
-                    onImageCaptured(uri)
-                },
-                onError = {
-                    error->
-                    viewModel.onError(error)
-                    onError(error)
-                }
-            )
-        } else {
-            CapturedImagePreview(
-                uri = uiState.value.capturedUri!!,
-                onShare = {
-                    shareImage(
-                        context = context,
-                        uri = uiState.value.capturedUri!!
-                    )
-                },
-                onDelete = {
-                    deleteImage(
-                        context = context,
-                        uri = uiState.value.capturedUri!!
-                    )
-                }
-            )
-        }
+//        if(uiState.value.capturedUri == null){
+        CameraPreview(
+            uiState = uiState.value,
+            onEvent = viewModel::onEvent,
+            onImageCaptured = { uri ->
+                viewModel.onImageCaptured(uri)
+                onImageCaptured(uri)
+            },
+            onError = { error ->
+                viewModel.onError(error)
+                onError(error)
+            },
+            navController = navController
+        )
+//        } else {
+//            CapturedImagePreview(
+//                uri = uiState.value.capturedUri!!,
+//                onShare = {
+//                    shareImage(
+//                        context = context,
+//                        uri = uiState.value.capturedUri!!
+//                    )
+//                },
+//                onDelete = {
+//                    deleteImage(
+//                        context = context,
+//                        uri = uiState.value.capturedUri!!
+//                    )
+//                }
+//            )
+//        }
 
         uiState.value.error?.let {
             error->
             ErrorDialog(
                 error = error,
-                onDismiss = {viewModel.onEvent(CameraUiEvent.ClearError)}
+                onDismiss = { viewModel.onEvent(CameraUiEvent.ClearError) }
             )
         }
     }

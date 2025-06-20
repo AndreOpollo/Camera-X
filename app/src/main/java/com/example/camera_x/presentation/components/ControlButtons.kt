@@ -1,7 +1,10 @@
 package com.example.camera_x.presentation.components
 
+import android.net.Uri
 import androidx.camera.core.CaptureBundles
 import androidx.camera.core.ImageCapture
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -24,8 +27,11 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
+import coil3.compose.rememberAsyncImagePainter
 
 @Composable
 fun SettingsButton(
@@ -120,4 +126,21 @@ fun CaptureButton(
             modifier = Modifier.size(32.dp),
             tint = Color.Black)
     }
+}
+@Composable
+fun ThumbnailButton(
+    modifier: Modifier = Modifier,
+    onClick:()->Unit,
+    uri: Uri? = null
+){
+    Image(
+        painter = rememberAsyncImagePainter(uri),
+        contentDescription = "Captured Image",
+        contentScale = ContentScale.Crop,
+        modifier = modifier
+            .padding(start = 8.dp)
+            .size(64.dp)
+            .clip(CircleShape)
+            .clickable{onClick()}
+    )
 }

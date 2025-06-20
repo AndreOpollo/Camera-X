@@ -1,18 +1,18 @@
 package com.example.camera_x.presentation.components
 
-import android.media.Image
 import android.net.Uri
-import android.util.Log
 import android.view.ScaleGestureDetector
-import androidx.camera.core.Camera
 import androidx.camera.core.CameraSelector
-import androidx.camera.core.ImageCapture
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.compose.animation.core.Animatable
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -21,12 +21,18 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import coil3.compose.rememberAsyncImagePainter
 import com.example.camera_x.presentation.CameraUiEvent
 import com.example.camera_x.presentation.CameraUiState
 import com.example.camera_x.presentation.CameraViewModel
@@ -39,7 +45,8 @@ fun CameraPreview(
     uiState: CameraUiState,
     onEvent: (CameraUiEvent)-> Unit,
     onImageCaptured:(Uri)->Unit,
-    onError:(Throwable)->Unit
+    onError:(Throwable)->Unit,
+    navController: NavHostController
 ){
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -152,8 +159,11 @@ fun CameraPreview(
         CameraOverlays(
             uiState = uiState,
             onEvent = onEvent,
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize(),
+            navController = navController
         )
+
     }
+
 }
 

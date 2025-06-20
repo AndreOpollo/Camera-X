@@ -58,6 +58,7 @@ class CameraViewModel @Inject constructor(): ViewModel() {
             is CameraUiEvent.SetPreviewView -> setPreviewView(e.previewView)
             CameraUiEvent.ResetCaptureFlag -> resetCaptureFlag()
             is CameraUiEvent.ChangeZoomByGestures -> changeZoomByGestures(e.zoom)
+            CameraUiEvent.ThumbnailClicked -> thumbnailClicked()
         }
     }
     private fun initializeCamera(){
@@ -236,6 +237,11 @@ class CameraViewModel @Inject constructor(): ViewModel() {
         }
         _uiState.value.camera?.cameraControl?.setExposureCompensationIndex(constrainedExposure)
 
+    }
+    private fun thumbnailClicked(){
+        _uiState.update {
+            it.copy(isThumbnailClicked = true)
+        }
     }
     fun setCamera(camera: Camera){
         _uiState.update {

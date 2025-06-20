@@ -35,4 +35,5 @@ sealed class CameraUiEvent{
     data class SetImageCapture(val imageCapture: ImageCapture): CameraUiEvent()
     data class SetPreviewView(val previewView: PreviewView): CameraUiEvent()
     data object ResetCaptureFlag: CameraUiEvent()
+    data object ThumbnailClicked: CameraUiEvent()
 }

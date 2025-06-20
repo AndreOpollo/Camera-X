@@ -29,5 +29,6 @@ data class CameraUiState(
     val camera: Camera? = null,
     val imageCapture: ImageCapture? = null,
     val previewView: PreviewView? = null,
-    val shouldCapturePhoto:Boolean = false
+    val shouldCapturePhoto:Boolean = false,
+    val isThumbnailClicked:Boolean = false
 )

@@ -3,10 +3,15 @@ package com.example.camera_x.presentation.components
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.example.camera_x.presentation.CameraUiEvent
 import com.example.camera_x.presentation.CameraUiState
 
@@ -15,7 +20,8 @@ import com.example.camera_x.presentation.CameraUiState
 fun CameraOverlays(
     uiState: CameraUiState,
     onEvent:(CameraUiEvent)->Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    navController: NavHostController
 ){
     Box(
         modifier = modifier
@@ -41,9 +47,11 @@ fun CameraOverlays(
             CameraControls(
                 uiState = uiState,
                 onEvent = onEvent,
-                modifier = Modifier.align(Alignment.BottomCenter)
+                modifier = Modifier.align(Alignment.BottomCenter),
+                navController = navController
             )
         }
+
     }
 
 }
