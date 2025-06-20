@@ -45,6 +45,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import coil3.compose.rememberAsyncImagePainter
+import com.example.camera_x.presentation.utils.saveImage
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 
@@ -145,7 +146,11 @@ fun CapturedImagePreview(
                     Spacer(modifier = Modifier.width(8.dp))
                     Text("Delete")
                 }
-                Button(onClick = {}) {
+                Button(onClick = {
+                    filteredBitmap?.let {
+                        saveImage(context,it)
+                    }
+                }) {
                     Icon(Icons.Default.Save, contentDescription = "Save")
                     Spacer(modifier = Modifier.width(8.dp))
                     Text("Save")

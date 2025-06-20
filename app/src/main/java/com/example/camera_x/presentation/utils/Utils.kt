@@ -3,6 +3,7 @@ package com.example.camera_x.presentation.utils
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
@@ -10,6 +11,7 @@ import android.util.Log
 import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.ScaleGestureDetector
+import android.widget.Toast
 import androidx.camera.core.Camera
 import androidx.camera.core.FocusMeteringAction
 import androidx.camera.core.ImageCapture
@@ -17,6 +19,7 @@ import androidx.camera.core.ImageCaptureException
 import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
 import com.example.camera_x.presentation.CameraUiEvent
+import java.io.OutputStream
 
 
 fun createImageCapture(
@@ -133,4 +136,40 @@ fun shareImage(context: Context,uri: Uri){
 }
 fun deleteImage(context: Context,uri:Uri){
     context.contentResolver.delete(uri,null,null)
+}
+fun saveImage(context: Context, bitmap: Bitmap){
+    val filename = "IMG_${System.currentTimeMillis()}.jpg"
+    val contentValues = ContentValues().apply {
+        put(MediaStore.Images.Media.DISPLAY_NAME, filename)
+        put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/FilteredImages")
+            put(MediaStore.Images.Media.IS_PENDING, 1)
+        }
+    }
+
+    val contentResolver = context.contentResolver
+    val uri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
+
+    if (uri != null) {
+        try {
+            val outputStream: OutputStream? = contentResolver.openOutputStream(uri)
+            if (outputStream != null) {
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+                outputStream.flush()
+                outputStream.close()
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                contentValues.clear()
+                contentValues.put(MediaStore.Images.Media.IS_PENDING, 0)
+                contentResolver.update(uri, contentValues, null, null)
+            }
+            Toast.makeText(context, "Image saved to gallery", Toast.LENGTH_SHORT).show()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Toast.makeText(context, "Failed to save image", Toast.LENGTH_SHORT).show()
+        }
+    } else {
+        Toast.makeText(context, "Unable to create image uri", Toast.LENGTH_SHORT).show()
+    }
 }
