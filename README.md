@@ -4,63 +4,63 @@ A modern Android camera application built using CameraX and Jetpack Compose, pac
 ## ✨ Features
 ### 🔁 Camera Switching
 
--Toggle between front and back cameras with a single tap.
+- Toggle between front and back cameras with a single tap.
 
 ### 🔍 Pinch to Zoom
 
--Use two fingers to zoom in and out smoothly. You can also manually adjust the zoom index via the slider in the advanced controls.
+- Use two fingers to zoom in and out smoothly. You can also manually adjust the zoom index via the slider in the advanced controls.
 
 ### 🎯 Tap to Focus
 
--Tap on any area of the preview to focus the camera.
+- Tap on any area of the preview to focus the camera.
 
 ### ⚡ Flash Modes
 
--Easily switch between Auto, On, and Off flash modes.
+- Easily switch between Auto, On, and Off flash modes.
 
 ### 🎨 Photo Filters
 
-Apply real-time editing filters like:
+- Apply real-time editing filters like:
 
-Sepia
+  - Sepia
 
-Grayscale
+  - Grayscale
 
-Polaroid
+  - Polaroid
 
-Contrast
+  - Contrast
 
 and more...
 
 ### 🌗 Exposure Control
 
-Maximize or minimize exposure levels manually.
+- Maximize or minimize exposure levels manually.
 
 ### ⏱ Timer Capture
 
-Take photos after a 3s or 10s delay using the built-in timer.
+- Take photos after a 3s or 10s delay using the built-in timer.
 
 ### 🧮 Grid Overlay
 
-Enable/disable a composition grid to aid better framing.
+- Enable/disable a composition grid to aid better framing.
 
 ### 👆 Double-Tap to Hide Controls
 
-Double-tap the screen to toggle UI controls for an immersive experience.
+- Double-tap the screen to toggle UI controls for an immersive experience.
 
 ### ⚡ Speed vs Latency
 
-Switch between fast capture or high-quality low-latency modes.
+- Switch between fast capture or high-quality low-latency modes.
 
 ### 💾 Photo Management
 
-Save photos to the gallery
+- Save photos to the gallery
 
-Share via other apps
+- Share via other apps
 
-Edit with filters
+- Edit with filters
 
-Delete unwanted shots
+- Delete unwanted shots
 
 # 🛠 Tech Stack
 CameraX – For modern camera functionality
