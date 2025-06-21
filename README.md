@@ -63,19 +63,18 @@ and more...
 - Delete unwanted shots
 
 # 🛠 Tech Stack
-CameraX – For modern camera functionality
 
-Jetpack Compose – Declarative UI toolkit
+| Tech            | Purpose                                                          |
+| -----------     | ---------------------------------------------------------------- |
+| Kotlin          | The modern Android development language                          |
+| CameraX         | For modern camera functionality                                  |
+| Jetpack Compose | Declarative UI toolkit                                           |
+| MediaStore API  | Save media in scoped storage                                     |
+| Dagger Hilt     | Dependency injection                                             |
+| Material 3      | Modern UI Styling                                                |
+| Coil            | Effecient Image Loading                                          |
 
-MediaStore API – Save media in scoped storage
 
-Dagger Hilt – Dependency injection
-
-Material 3 – UI components
-
-Coil – Efficient image loading
-
-Kotlin – The modern Android development language
 
 ## 🚀 Setup & Installation
 ⚠️ This app is intended to run on a physical Android device due to camera and MediaStore dependencies. Emulator support is not guaranteed.
