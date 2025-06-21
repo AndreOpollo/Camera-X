@@ -2,23 +2,23 @@
 A modern Android camera application built using CameraX and Jetpack Compose, packed with essential and creative photography features. Designed for smooth performance and high-quality captures on physical Android devices.
 
 ## ✨ Features
-🔁 Camera Switching
+### 🔁 Camera Switching
 
 -Toggle between front and back cameras with a single tap.
 
-🔍 Pinch to Zoom
+### 🔍 Pinch to Zoom
 
 -Use two fingers to zoom in and out smoothly. You can also manually adjust the zoom index via the slider in the advanced controls.
 
-🎯 Tap to Focus
+### 🎯 Tap to Focus
 
 -Tap on any area of the preview to focus the camera.
 
-⚡ Flash Modes
+### ⚡ Flash Modes
 
 -Easily switch between Auto, On, and Off flash modes.
 
-🎨 Photo Filters
+### 🎨 Photo Filters
 
 Apply real-time editing filters like:
 
@@ -32,27 +32,27 @@ Contrast
 
 and more...
 
-🌗 Exposure Control
+### 🌗 Exposure Control
 
 Maximize or minimize exposure levels manually.
 
-⏱ Timer Capture
+### ⏱ Timer Capture
 
 Take photos after a 3s or 10s delay using the built-in timer.
 
-🧮 Grid Overlay
+### 🧮 Grid Overlay
 
 Enable/disable a composition grid to aid better framing.
 
-👆 Double-Tap to Hide Controls
+### 👆 Double-Tap to Hide Controls
 
 Double-tap the screen to toggle UI controls for an immersive experience.
 
-⚡ Speed vs Latency
+### ⚡ Speed vs Latency
 
 Switch between fast capture or high-quality low-latency modes.
 
-💾 Photo Management
+### 💾 Photo Management
 
 Save photos to the gallery
 
