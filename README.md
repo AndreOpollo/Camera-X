@@ -89,31 +89,23 @@ A modern Android camera application built using CameraX and Jetpack Compose, pac
 - Enable developer options and USB debugging on your device
 
 🔧 Steps
-Clone the repository
+- Clone the repository
 ```
-bash
-Copy
-Edit
-git clone https://github.com/yourusername/camera-x-app.git
-cd camera-x-app
+git clone https://github.com/AndreOpollo/Camera-X.git
 ```
-Open the project in Android Studio
+- Open the project in Android Studio
 
-Connect your Android device via USB
+- Connect your Android device via USB
 
-Run the app
-
-Click the Run button in Android Studio
-
-Choose your physical device from the deployment targets
+- Run the app
 
 
 💡 Notes
-Make sure to grant Camera and Storage permissions on first launch.
+- Make sure to grant Camera and Storage permissions on first launch.
 
-Filters are implemented via ColorMatrix for real-time preview and editing.
+- Filters are implemented via ColorMatrix for real-time preview and editing.
 
-Use MediaStore to ensure scoped storage compatibility on Android 10+.
+- Use MediaStore to ensure scoped storage compatibility on Android 10+.
 
 📸 Screenshots
 Add your app screenshots here for better presentation.
