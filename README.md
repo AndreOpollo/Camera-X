@@ -1,12 +1,12 @@
-📷 Camera-X App
+# 📷 Camera-X App
 A modern Android camera application built using CameraX and Jetpack Compose, packed with essential and creative photography features. Designed for smooth performance and high-quality captures on physical Android devices.
 
-✨ Features
+## ✨ Features
 🔁 Camera Switching
 Toggle between front and back cameras with a single tap.
 
 🔍 Pinch to Zoom
-Use two fingers to zoom in and out smoothly.
+Use two fingers to zoom in and out smoothly. You can also manually adjust the zoom index via the slider in the advanced controls.
 
 🎯 Tap to Focus
 Tap on any area of the preview to focus the camera.
@@ -52,7 +52,7 @@ Edit with filters
 
 Delete unwanted shots
 
-🛠 Tech Stack
+# 🛠 Tech Stack
 CameraX – For modern camera functionality
 
 Jetpack Compose – Declarative UI toolkit
@@ -67,10 +67,10 @@ Coil – Efficient image loading
 
 Kotlin – The modern Android development language
 
-🚀 Setup & Installation
+## 🚀 Setup & Installation
 ⚠️ This app is intended to run on a physical Android device due to camera and MediaStore dependencies. Emulator support is not guaranteed.
 
-✅ Prerequisites
+## ✅ Prerequisites
 Android Studio Hedgehog or newer
 
 Android device running API 26+
