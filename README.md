@@ -88,7 +88,7 @@ A modern Android camera application built using CameraX and Jetpack Compose, pac
 
 - Enable developer options and USB debugging on your device
 
-🔧 Steps
+## 🔧 Steps
 - Clone the repository
 ```
 git clone https://github.com/AndreOpollo/Camera-X.git
@@ -100,12 +100,12 @@ git clone https://github.com/AndreOpollo/Camera-X.git
 - Run the app
 
 
-💡 Notes
+## 💡 Notes
 - Make sure to grant Camera and Storage permissions on first launch.
 
 - Filters are implemented via ColorMatrix for real-time preview and editing.
 
 - Use MediaStore to ensure scoped storage compatibility on Android 10+.
 
-📸 Screenshots
+## 📸 Screenshots
 Add your app screenshots here for better presentation.
