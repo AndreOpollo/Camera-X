@@ -45,6 +45,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import coil3.compose.rememberAsyncImagePainter
+import com.example.camera_x.presentation.utils.getCorrectlyOrientedBitmap
 import com.example.camera_x.presentation.utils.saveBitmapToCache
 import com.example.camera_x.presentation.utils.saveImage
 import kotlinx.coroutines.coroutineScope
@@ -67,7 +68,8 @@ fun CapturedImagePreview(
         val inputStream = context.contentResolver.openInputStream(uri)
         val originalBitmap = BitmapFactory.decodeStream(inputStream)
         inputStream?.close()
-        filteredBitmap = applyColorMatrixFilter(originalBitmap, selectedFilter.matrix)
+        val rotatedBitmap = uri.let { getCorrectlyOrientedBitmap(context, it, originalBitmap) }
+        filteredBitmap = applyColorMatrixFilter(rotatedBitmap, selectedFilter.matrix)
     }
     Box(modifier = modifier.fillMaxSize()){
         filteredBitmap?.let{bitmap->

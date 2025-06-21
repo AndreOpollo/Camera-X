@@ -4,6 +4,8 @@ import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.Matrix
+import android.media.ExifInterface
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
@@ -194,4 +196,25 @@ fun saveBitmapToCache(context: Context, bitmap: Bitmap): Uri {
         "${context.packageName}.provider",
         file
     )
+}
+fun getCorrectlyOrientedBitmap(context: Context, uri: Uri, bitmap: Bitmap): Bitmap {
+    val inputStream = context.contentResolver.openInputStream(uri) ?: return bitmap
+    val exif = ExifInterface(inputStream)
+    inputStream.close()
+
+    val orientation = exif.getAttributeInt(
+        ExifInterface.TAG_ORIENTATION,
+        ExifInterface.ORIENTATION_NORMAL
+    )
+
+    val matrix = Matrix()
+    when (orientation) {
+        ExifInterface.ORIENTATION_ROTATE_90 -> matrix.postRotate(90f)
+        ExifInterface.ORIENTATION_ROTATE_180 -> matrix.postRotate(180f)
+        ExifInterface.ORIENTATION_ROTATE_270 -> matrix.postRotate(270f)
+        ExifInterface.ORIENTATION_FLIP_HORIZONTAL -> matrix.preScale(-1f, 1f)
+        ExifInterface.ORIENTATION_FLIP_VERTICAL -> matrix.preScale(1f, -1f)
+    }
+
+    return Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
 }
