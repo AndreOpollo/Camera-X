@@ -30,7 +30,7 @@ A modern Android camera application built using CameraX and Jetpack Compose, pac
 
   - Contrast
 
-and more...
+- and more...
 
 ### 🌗 Exposure Control
 
@@ -80,22 +80,23 @@ and more...
 ⚠️ This app is intended to run on a physical Android device due to camera and MediaStore dependencies. Emulator support is not guaranteed.
 
 ## ✅ Prerequisites
-Android Studio Hedgehog or newer
+- Android Studio Hedgehog or newer
 
-Android device running API 26+
+- Android device running API 26+
 
-Kotlin 1.9+
+- Kotlin 1.9+
 
-Enable developer options and USB debugging on your device
+- Enable developer options and USB debugging on your device
 
 🔧 Steps
 Clone the repository
-
+```
 bash
 Copy
 Edit
 git clone https://github.com/yourusername/camera-x-app.git
 cd camera-x-app
+```
 Open the project in Android Studio
 
 Connect your Android device via USB
