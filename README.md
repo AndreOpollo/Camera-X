@@ -112,16 +112,16 @@ git clone https://github.com/AndreOpollo/Camera-X.git
 <p>
   <img src="https://github.com/user-attachments/assets/8b0a5f30-bbcd-4a24-87ae-8165de57a50a" width="300" style="margin-right:16px;"/>
   <img src="https://github.com/user-attachments/assets/1875dc2a-bf69-4007-9587-971f26e8ee74" width="300"/>
-    <img src="https://github.com/user-attachments/assets/fc94e213-9f30-4a01-a413-f892299be5de" width="300" style="margin-right:16px;"/>  
+  <img src="https://github.com/user-attachments/assets/fc94e213-9f30-4a01-a413-f892299be5de" width="300" style="margin-right:16px;"/>  
 </p>
+
+
 <p>
-  <img src="https://github.com/user-attachments/assets/fc94e213-9f30-4a01-a413-f892299be5de" width="300" style="margin-right:16px;"/>
   <img src="https://github.com/user-attachments/assets/104eceb6-2d7b-4ae6-b11f-30cfa8e40805" width="300"/>
-</p>
-<p>
   <img src="https://github.com/user-attachments/assets/bec75a17-981f-40ec-b274-941ef9976b61" width="300" style="margin-right:16px;"/>
   <img src="https://github.com/user-attachments/assets/1d84bc2e-16f6-4cfb-9b0b-a6ddf735e45d" width="300"/>
 </p>
+
 
 
 
