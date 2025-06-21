@@ -4,19 +4,19 @@ A modern Android camera application built using CameraX and Jetpack Compose, pac
 ## ✨ Features
 🔁 Camera Switching
 
-Toggle between front and back cameras with a single tap.
+-Toggle between front and back cameras with a single tap.
 
 🔍 Pinch to Zoom
 
-Use two fingers to zoom in and out smoothly. You can also manually adjust the zoom index via the slider in the advanced controls.
+-Use two fingers to zoom in and out smoothly. You can also manually adjust the zoom index via the slider in the advanced controls.
 
 🎯 Tap to Focus
 
-Tap on any area of the preview to focus the camera.
+-Tap on any area of the preview to focus the camera.
 
 ⚡ Flash Modes
 
-Easily switch between Auto, On, and Off flash modes.
+-Easily switch between Auto, On, and Off flash modes.
 
 🎨 Photo Filters
 
